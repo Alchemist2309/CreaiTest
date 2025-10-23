@@ -15,3 +15,8 @@ class CreaiPage:
     def get_status_code(self):
         response = requests.get(self.URL)
         return response.status_code
+    
+    def console_errors(self):
+        logs = self.driver.get_log('browser')
+        severe_logs = [log for log in logs if log['level'] == 'SEVERE']
+        return len(severe_logs) == 0

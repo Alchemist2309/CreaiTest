@@ -1,4 +1,4 @@
-from behave import given, when, then
+from behave import given, when, then, step
 from utils.driver import get_driver
 from pages.creai_page import CreaiPage
 
@@ -12,3 +12,7 @@ def open_homepage(context):
 def verify_homepage_load(context):
     status_code = context.creai_page.get_status_code()
     assert status_code == 200
+
+@then('no debe haber errores visibles en consola')
+def verify_no_console_errors(context):
+    assert context.creai_page.console_errors()
