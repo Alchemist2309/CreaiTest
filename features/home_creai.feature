@@ -16,3 +16,9 @@ Feature: Validar la homepage de creai
         Given El usuario navega a la página de inicio de creai
         When hace clic en la opción About us del menu
         Then la URL debe ser la de la página About us
+
+    Scenario: Cambiar idioma a español y navegar a Sobre nosotros
+        Given El usuario navega a la página de inicio de creai
+        When el usuario selecciona el idioma español
+        And hace clic en la opción About us del menú en cualquier idioma
+        Then la URL debe ser la de About us en español

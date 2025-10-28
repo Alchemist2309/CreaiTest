@@ -7,6 +7,8 @@ from selenium.common.exceptions import TimeoutException, NoSuchElementException
 
 class CreaiPage:
     URL = "https://www.creai.mx/"
+    ABOUT_URL = "https://www.creai.mx/about-us"
+    SPANISH_ABOUT_URL = "https://www.creai.mx/es-mx/about-us"
 
     # Localizadores
     LOGO = (By.XPATH, "//img[contains(@src, 'Logo.svg')]")
@@ -14,6 +16,8 @@ class CreaiPage:
     CTA_BUTTON = (By.XPATH, "//a[contains(@href, '/contact')]")
     SECTIONS = (By.CSS_SELECTOR, "section")
     ABOUT_US = (By.XPATH, "(.//*[normalize-space(text()) and normalize-space(.)='Success stories'])[1]/following::div[2]")
+    ABOUT_US_LINK = (By.XPATH, "//a[contains(@href, '/about-us') or contains(@href, '/es-mx/about-us')]")
+    LANGUAGE_SELECTOR_ES = (By.XPATH, "//a[contains(@href, '/es-mx') or contains(text(), 'ES') or contains(text(), 'Español')]")
 
 
     def __init__(self, driver):
@@ -96,4 +100,33 @@ class CreaiPage:
         except TimeoutException:
             return False
 
-    
+    def select_spanish_language(self):
+        try:
+            self.accept_cookies()
+            language_button = self.wait.until(
+                EC.element_to_be_clickable(self.LANGUAGE_SELECTOR_ES)
+            )
+            language_button.click()
+            time.sleep(2)  # Esperar a que la página recargue con el nuevo idioma
+            return True
+        except (TimeoutException, NoSuchElementException):
+            return False
+
+    def click_about_us_multilanguage(self):
+        try:
+            about_link = self.wait.until(
+                EC.element_to_be_clickable(self.ABOUT_US_LINK)
+            )
+            about_link.click()
+            return True
+        except (TimeoutException, NoSuchElementException):
+            return False
+
+    def validate_spanish_about_us_url(self):
+        try:
+            self.wait.until(EC.url_contains("/es-mx/about-us"))
+            current_url = self.driver.current_url
+            return current_url == self.SPANISH_ABOUT_URL
+        except TimeoutException:
+            return False
+

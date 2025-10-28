@@ -38,3 +38,15 @@ def step_click_about_us(context):
 @then("la URL debe ser la de la página About us")
 def step_validate_about_url(context):
     assert context.creai_page.validate_about_us_url(), f" La URL no es la esperada ({context.driver.current_url})"
+
+@when("el usuario selecciona el idioma español")
+def step_select_spanish_language(context):
+    assert context.creai_page.select_spanish_language(), "No se pudo seleccionar el idioma español"
+
+@when("hace clic en la opción About us del menú en cualquier idioma")
+def step_click_about_us_multilanguage(context):
+    assert context.creai_page.click_about_us_multilanguage(), "No se pudo hacer clic en About us"
+
+@then("la URL debe ser la de About us en español")
+def step_validate_spanish_about_url(context):
+    assert context.creai_page.validate_spanish_about_us_url(), f"La URL no es la esperada. URL actual: {context.driver.current_url}"
